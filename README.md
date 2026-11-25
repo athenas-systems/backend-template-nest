@@ -124,3 +124,25 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Local development and tests
+
+The project uses Bun and PostgreSQL. Copy `.env.example` to `.env` and configure `DATABASE_URL` for the application database. For integration tests, copy `.env.test.example` to `.env.test` and use its `TEST_DATABASE_URL`; never point it at data you need to keep. `docker compose up -d postgres postgres-test` starts the application database and the isolated test database.
+
+```bash
+bun install
+bun run db:generate
+bun run db:migrate
+bun run start:dev
+```
+
+Useful checks:
+
+```bash
+bun run lint
+bun run build
+bun run test
+bun run test:e2e
+```
+
+The e2e test global setup applies committed Drizzle migrations to the database selected by `TEST_DATABASE_URL`. E2e tests truncate application tables between cases. Unit tests do not require PostgreSQL.
