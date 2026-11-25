@@ -1,12 +1,21 @@
-import 'reflect-metadata';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module.js';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import "reflect-metadata";
+import { NestFactory } from "@nestjs/core";
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from "@nestjs/platform-fastify";
+import { ConfigService } from "@nestjs/config";
+import { AppModule } from "./app.module.js";
+import { configureApp } from "./configure-app.js";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+  configureApp(app);
   app.enableShutdownHooks();
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(app.get(ConfigService).get<number>("PORT", 3000), "0.0.0.0");
 }
 
 void bootstrap();

@@ -146,3 +146,5 @@ bun run test:e2e
 ```
 
 The e2e test global setup applies committed Drizzle migrations to the database selected by `TEST_DATABASE_URL`. E2e tests truncate application tables between cases. Unit tests do not require PostgreSQL.
+
+The API validates `DATABASE_URL`, `PORT`, and `CORS_ORIGIN` at startup. Set `CORS_ORIGIN` to one or more comma-separated origins. OpenAPI is available at `/docs`; bearer authentication is registered in the document for protected endpoints.
