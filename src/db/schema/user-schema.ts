@@ -1,10 +1,13 @@
-import { boolean, integer, pgTable, text } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const users = pgTable('users', {
+export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  firstName: text('first_name').notNull(),
-  lastName: text('last_name').notNull(),
-  isActive: boolean('is_active').notNull().default(true),
+  email: text().notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: text().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;
